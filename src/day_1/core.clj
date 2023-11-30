@@ -15,16 +15,28 @@
           parsed (map parse-calories-by-elve parsed-blocks)]
       parsed)))
 
-(defn find-most-calories
+(defn sorted-calories
   [calories-by-elves]
   (let [calories-by-elves (parse calories-by-elves)
-        calories-by-elve (map #(apply + %) calories-by-elves)
-        sorted-calories-by-elve (sort > calories-by-elve)]
-    
-    (first sorted-calories-by-elve)))
+        calories-by-elve (map #(apply + %) calories-by-elves)]
+   (sort > calories-by-elve)))
+
+(defn find-most-calories
+  [calories-by-elves]
+ (first (sorted-calories calories-by-elves)))
 
 (defn main
   []
   (let [input (slurp "./src/day_1/input.txt")]
     (find-most-calories input)))
 
+;;Part two
+
+(defn sum-calories-by-top-n
+  [calories-by-elves n]
+  (apply + (take n (sorted-calories calories-by-elves))))
+
+(defn main-2
+  []
+  (let [input (slurp "./src/day_1/input.txt")]
+    (sum-calories-by-top-n input 3)))
